@@ -1,6 +1,6 @@
 # Volyova
 
-Freedesktop.org Notification backend which provides a libfuse-based filesystem interface.
+Freedesktop.org Notification backend which provides a libfuse-based filesystem interface.  It was inspired by [Rofication](https://github.com/DaveDavenport/Rofication). 
 
 # Status
 
@@ -13,22 +13,24 @@ This project is intended to provide a general purpose notification daemon for th
 # Design
 ## File Interface
 
+File operations can be used to manage notifications as if they were plain files.  Once the daemon is started, a libfuse mount is created and populated by volyova with the existing Notifications.
+
 ```bash
-~/Notifications
-~/Notifications/unread-count
-~/Notifications/all/
-~/Notifications/low/
-~/Notifications/normal/
-~/Notifications/critical/
+~/Notifications             # The mount point for notifications
+~/Notifications/count       # Contains the total count of notifications
+~/Notifications/all/        # Contains all notifications 
+~/Notifications/low/        # Contains low-priority notifications
+~/Notifications/normal/     # Contains normal-priority notifications
+~/Notifications/critical/   # Contains critical-priority notifications
 ```
 
 ## Check for notifications
 
 ```bash
-if [ -z "$(ls -A /path/to/dir)" ]; then
+if [ -z "$(ls -A $HOME/Notifications/all)" ]; then
    echo "You have notifications"
 else
-   echo "You have no notificatgions"
+   echo "You have no notifications"
 fi
 ```
 
